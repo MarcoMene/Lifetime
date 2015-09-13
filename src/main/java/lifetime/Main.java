@@ -1,22 +1,31 @@
 package lifetime;
 
-import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by u0h2247 on 9/11/2015.
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
-        String installsFilename = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\tot_installs_20150622-20150904.csv";
-        String filename1 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150622 - 20150630.csv";
-        String filename2 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150701 - 20150715.csv";
-        String filename3 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150716 - 20150731.csv";
-        String filename4 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150801 - 20150816.csv";
-        String filename5 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150817 - 20150904.csv";
+        final int nFiles = args.length;
+        if(nFiles < 2)  {
+            throw new Exception("Provide at least 2 files as input");
+        }
+        String installsFilename = args[0];
 
-        DataRetriever dr = new DataRetriever(installsFilename, filename1, filename2, filename3, filename4, filename5);
+        List<String> sessionFiles = new LinkedList<String>();
+        for (int i = 1; i < nFiles; ++i){
+            sessionFiles.add(args[i]);
+        }
+
+        DataRetriever dr = new DataRetriever(installsFilename);
+
+        for (String sessionFile : sessionFiles) {
+            dr.addSessionFile(sessionFile);
+        }
 
         Analyzer analyzer = new Analyzer(dr.getData());
 
@@ -24,6 +33,10 @@ public class Main {
         Double averageLifetimeUncertainty = analyzer.getAverageLifetimeUncertainty();
 
         System.out.println("Average lifetime: " + averageLifetime + " +/- " + averageLifetimeUncertainty);
+
+        analyzer.dumpLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialDumpLts.csv");
+        analyzer.dumpAvgLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialAvgLtDumpLts.csv");
+
     }
 
 }

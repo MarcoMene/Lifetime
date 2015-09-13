@@ -26,5 +26,8 @@
         <module name="Lifetime" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Lifetime" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
