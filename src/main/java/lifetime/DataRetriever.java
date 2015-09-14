@@ -19,19 +19,20 @@ public class DataRetriever {
     private Map<String, Set<Integer>> data = new HashMap<String, Set<Integer>>();  // map users, set of usage days, in ints
 
     private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
-    private static long msInADay = 1000 * 60 * 60 * 24;
+    private static long currentTimeMillis = System.currentTimeMillis();
 
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
      }
 
-    public DataRetriever(String installsFilename, String... filenames) throws IOException {
+    public DataRetriever(String installsFilename) throws IOException {
 
         parseInstalls(installsFilename);
-        for (String filename : filenames) {
-            parseSessions(filename);
-        }
 
+    }
+
+    public void addSessionFile(String filename) throws IOException {
+        parseSessions(filename);
     }
 
     public Map<String, Date> getUsers() {
@@ -82,7 +83,7 @@ public class DataRetriever {
         while ((nextLine = reader.readNext()) != null) {
 
             // nextLine[] is an array of values from the line
-            if (nextLine.length < 3 || nextLine[0].equals("")) { // skip the header
+            if (nextLine.length < 3 || nextLine[0].equals("")) { // skip the header or bad lines
                 continue;
             }
 
@@ -100,11 +101,12 @@ public class DataRetriever {
             Long dayDiff = null;
             try {
                 Long milliSeconds = Long.parseLong(tsString);
-                long diff = milliSeconds - userEntryDate.getTime();
-                if (isBadTimeDiff(diff)) {  // entry quality check
+                if (isBadTimestamp(milliSeconds)) {  // quality check
                     continue;
                 }
+                long diff = milliSeconds - userEntryDate.getTime();
                 dayDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                if(dayDiff < 0) continue; // multiple installations
             } catch (Exception e) {
                 System.out.println("Semething went wrong while parsing time-stamp: " + tsString + ". skipping entry");  // simply skip, we don't want to waste everything for a bugged entry, should be logged somewhere..
                 e.printStackTrace();
@@ -121,9 +123,10 @@ public class DataRetriever {
 
     }
 
-    private static boolean isBadTimeDiff(long diff) {
+    private static boolean isBadTimestamp(long milliSeconds) {
+
         // can be customized to meet other quality criteria
-        if (diff < 0 || diff > (1000 * msInADay)) {
+        if (milliSeconds < 0 || milliSeconds > currentTimeMillis) {
             return true;
         }
         return false;
