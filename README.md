@@ -1,6 +1,9 @@
 # Lifetime
+To compile:
+mvn clean compile assembly:single
+
 To run the analysis:
-java Main <installfile.csv> <sessionfile1.csv> <sessionfile2.csv> ..
+java -cp <target.jar> Main <installfile.csv> <sessionfile1.csv> <sessionfile2.csv> ..
 
 Csv file structure:
 
