@@ -11,22 +11,22 @@ public class DataRetrieverTest extends TestCase {
 
     public void testDataRetriever() throws Exception {
 
-        String installsFilename = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\tot_installs_20150622-20150904.csv";
-        String filename1 = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\Sessions 20150622 - 20150630.csv";
-        String filename2 = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\Sessions 20150701 - 20150715.csv";
-        String filename3 = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\Sessions 20150716 - 20150731.csv";
-        String filename4 = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\Sessions 20150801 - 20150816.csv";
-        String filename5 = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\Archive\\Sessions 20150817 - 20150904.csv";
+        String installsFilename = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\tot_installs_20150622-20150904.csv";
+        String filename1 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150622 - 20150630.csv";
+        String filename2 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150701 - 20150715.csv";
+        String filename3 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150716 - 20150731.csv";
+        String filename4 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150801 - 20150816.csv";
+        String filename5 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150817 - 20150904.csv";
 
 //        String installsFilename = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\dummy_installs.csv";
 //        String filename1 =        "C:\\Users\\marco.meneghelli\\Desktop\\BS\\dummy_Sessions.csv";
 
         List<String> sessionFiles = new LinkedList<String>();
         sessionFiles.add(filename1);
-        sessionFiles.add(filename2);
-        sessionFiles.add(filename3);
-        sessionFiles.add(filename4);
-        sessionFiles.add(filename5);
+//        sessionFiles.add(filename2);
+//        sessionFiles.add(filename3);
+//        sessionFiles.add(filename4);
+//        sessionFiles.add(filename5);
 
 
         try {
@@ -46,8 +46,8 @@ public class DataRetrieverTest extends TestCase {
 
             System.out.println("Average lifetime: " + averageLifetime + " +/- " + averageLifetimeUncertainty);
 
-            analyzer.dumpLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialDumpLts.csv");
-            analyzer.dumpAvgLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialAvgLtDumpLts.csv");
+            analyzer.dumpLtsToCsvFile("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\trialDumpLts.csv");
+            analyzer.dumpAvgLtsToCsvFile("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\trialDumpAvgLts.csv");
 
 //            Map<Integer, Long> histogram = analyzer.getHistogram();
 

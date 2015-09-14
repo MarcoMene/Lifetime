@@ -34,9 +34,6 @@ public class Main {
 
         System.out.println("Average lifetime: " + averageLifetime + " +/- " + averageLifetimeUncertainty);
 
-        analyzer.dumpLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialDumpLts.csv");
-        analyzer.dumpAvgLtsToCsvFile("C:\\Users\\marco.meneghelli\\Desktop\\BS\\trialAvgLtDumpLts.csv");
-
     }
 
 }
