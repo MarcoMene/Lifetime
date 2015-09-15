@@ -15,8 +15,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class DataRetriever {
 
-    private Map<String, Date> users = new HashMap<String, Date>();  // map users, install-date (in Unix time)
+    private Map<String, Date> users = new HashMap<String, Date>();  // map users, install-date
     private Map<String, Set<Integer>> data = new HashMap<String, Set<Integer>>();  // map users, set of usage days, in ints
+    private Date latestDateInSessions =  new Date(0);  // date-zero: 1st Jan 1970
 
     private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
     private static long currentTimeMillis = System.currentTimeMillis();
@@ -41,6 +42,10 @@ public class DataRetriever {
 
     public Map<String, Set<Integer>> getData() {
         return data;
+    }
+
+    public Date getLatestDateInSessions() {
+        return latestDateInSessions;
     }
 
     private void parseInstalls(String filename) throws IOException {
@@ -96,17 +101,27 @@ public class DataRetriever {
             Date userEntryDate = users.get(userId);
 
             String tsString = nextLine[2];
-//                String durationString = nextLine[3];b  // useless, so far
+//                String durationString = nextLine[3];  // useless, so far
 
             Long dayDiff = null;
             try {
+
                 Long milliSeconds = Long.parseLong(tsString);
                 if (isBadTimestamp(milliSeconds)) {  // quality check
                     continue;
                 }
+
+                // get the date (for latest date)
+                Date currentDate = new Date(milliSeconds);
+                if(currentDate.compareTo(latestDateInSessions) > 0){ // if later, update latest
+                    latestDateInSessions = currentDate;
+                }
+
+                // evaluate day diff
                 long diff = milliSeconds - userEntryDate.getTime();
                 dayDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                 if(dayDiff < 0) continue; // multiple installations
+
             } catch (Exception e) {
                 System.out.println("Semething went wrong while parsing time-stamp: " + tsString + ". skipping entry");  // simply skip, we don't want to waste everything for a bugged entry, should be logged somewhere..
                 e.printStackTrace();

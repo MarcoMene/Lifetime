@@ -11,13 +11,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         final int nFiles = args.length;
-        if(nFiles < 2)  {
+        if (nFiles < 2) {
             throw new Exception("Provide at least 2 files as input");
         }
         String installsFilename = args[0];
 
         List<String> sessionFiles = new LinkedList<String>();
-        for (int i = 1; i < nFiles; ++i){
+        for (int i = 1; i < nFiles; ++i) {
             sessionFiles.add(args[i]);
         }
 
@@ -27,12 +27,7 @@ public class Main {
             dr.addSessionFile(sessionFile);
         }
 
-        Analyzer analyzer = new Analyzer(dr.getData());
-
-        Double averageLifetime = analyzer.getAverageLifetime();
-        Double averageLifetimeUncertainty = analyzer.getAverageLifetimeUncertainty();
-
-        System.out.println("Average lifetime: " + averageLifetime + " +/- " + averageLifetimeUncertainty);
+        DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLatestDateInSessions(), new WilsonModel());
 
     }
 

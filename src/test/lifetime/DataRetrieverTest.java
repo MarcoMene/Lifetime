@@ -18,15 +18,12 @@ public class DataRetrieverTest extends TestCase {
         String filename4 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150801 - 20150816.csv";
         String filename5 = "C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\Archive\\Archive\\Sessions 20150817 - 20150904.csv";
 
-//        String installsFilename = "C:\\Users\\marco.meneghelli\\Desktop\\BS\\dummy_installs.csv";
-//        String filename1 =        "C:\\Users\\marco.meneghelli\\Desktop\\BS\\dummy_Sessions.csv";
-
         List<String> sessionFiles = new LinkedList<String>();
         sessionFiles.add(filename1);
-//        sessionFiles.add(filename2);
-//        sessionFiles.add(filename3);
-//        sessionFiles.add(filename4);
-//        sessionFiles.add(filename5);
+        sessionFiles.add(filename2);
+        sessionFiles.add(filename3);
+        sessionFiles.add(filename4);
+        sessionFiles.add(filename5);
 
 
         try {
@@ -36,23 +33,13 @@ public class DataRetrieverTest extends TestCase {
                 dr.addSessionFile(sessionFile);
             }
 
-            Analyzer analyzer = new Analyzer(dr.getData());
+            DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLatestDateInSessions(), new WilsonModel());
 
-            Double averageLifetime = analyzer.getAverageLifetime();
-            Double averageLifetimeUncertainty = analyzer.getAverageLifetimeUncertainty();
-
-            assertTrue(averageLifetime > 0);
-            assertTrue(averageLifetimeUncertainty > 0);
-
-            System.out.println("Average lifetime: " + averageLifetime + " +/- " + averageLifetimeUncertainty);
-
-            analyzer.dumpLtsToCsvFile("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\trialDumpLts.csv");
-            analyzer.dumpAvgLtsToCsvFile("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\trialDumpAvgLts.csv");
-
-//            Map<Integer, Long> histogram = analyzer.getHistogram();
+            dp.dumpConfidenceIntervalsToCsv("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\dumpCI.csv");
 
         } catch (Exception e) {
             System.out.print("Nothing done. Need to fix file path probably..");
+            e.printStackTrace();
             return;
         }
     }
@@ -80,6 +67,12 @@ public class DataRetrieverTest extends TestCase {
         long hoursDiff = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
 
         assertTrue(hoursDiff == 9L);
+
+        // parse milliseconds, compare dates
+        Date d3 = new Date(myApproximateTime);
+        Date d4 = new Date(ct);
+
+        assertTrue(d4.compareTo(d3) > 0);
 
     }
 
