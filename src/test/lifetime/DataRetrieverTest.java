@@ -20,10 +20,10 @@ public class DataRetrieverTest extends TestCase {
 
         List<String> sessionFiles = new LinkedList<String>();
         sessionFiles.add(filename1);
-        sessionFiles.add(filename2);
-        sessionFiles.add(filename3);
-        sessionFiles.add(filename4);
-        sessionFiles.add(filename5);
+//        sessionFiles.add(filename2);
+//        sessionFiles.add(filename3);
+//        sessionFiles.add(filename4);
+//        sessionFiles.add(filename5);
 
 
         try {
@@ -33,7 +33,7 @@ public class DataRetrieverTest extends TestCase {
                 dr.addSessionFile(sessionFile);
             }
 
-            DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLatestDateInSessions(), new WilsonModel());
+            DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLastDateInSessions(), new WilsonModel());
 
             dp.dumpConfidenceIntervalsToCsv("C:\\Users\\u0h2247\\Desktop\\Altro\\BS\\challenge\\dumpCI.csv");
 

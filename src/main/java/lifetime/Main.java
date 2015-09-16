@@ -11,13 +11,15 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         final int nFiles = args.length;
-        if (nFiles < 2) {
-            throw new Exception("Provide at least 2 files as input");
+        if (nFiles < 3) {
+            throw new Exception("Provide at least 3 files as input");
         }
         String installsFilename = args[0];
 
+        String targetFilename = args[1];
+
         List<String> sessionFiles = new LinkedList<String>();
-        for (int i = 1; i < nFiles; ++i) {
+        for (int i = 2; i < nFiles; ++i) {
             sessionFiles.add(args[i]);
         }
 
@@ -27,7 +29,11 @@ public class Main {
             dr.addSessionFile(sessionFile);
         }
 
-        DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLatestDateInSessions(), new WilsonModel());
+        DataPacker dp = new DataPacker(dr.getUsers(), dr.getData(), dr.getLastDateInSessions(), new WilsonModel());
+
+        dp.dumpConfidenceIntervalsToCsv(targetFilename);
+
+        System.out.println("Find dumped confidence intervals in " + targetFilename);
 
     }
 

@@ -116,10 +116,13 @@ public class DataPacker {
 
     }
 
-    int getFillableNDays(Date d) {
+    private int getFillableNDays(Date d) {
 
         long diff = latestDateInSessions.getTime() - d.getTime();
         int dayMaxDiff = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        if(dayMaxDiff <0){
+            return -1;
+        }
         return dayMaxDiff + 1;
 
     }

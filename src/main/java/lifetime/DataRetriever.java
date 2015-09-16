@@ -17,7 +17,8 @@ public class DataRetriever {
 
     private Map<String, Date> users = new HashMap<String, Date>();  // map users, install-date
     private Map<String, Set<Integer>> data = new HashMap<String, Set<Integer>>();  // map users, set of usage days, in ints
-    private Date latestDateInSessions =  new Date(0);  // date-zero: 1st Jan 1970
+    private Date lastDateInSessions =  new Date(0);  // date-zero: 1st Jan 1970
+    private Date firstDateInSessions =  new Date(currentTimeMillis);  // currentDate, the max achievable
 
     private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
     private static long currentTimeMillis = System.currentTimeMillis();
@@ -44,8 +45,12 @@ public class DataRetriever {
         return data;
     }
 
-    public Date getLatestDateInSessions() {
-        return latestDateInSessions;
+    public Date getLastDateInSessions() {
+        return lastDateInSessions;
+    }
+
+    public Date getFirstDateInSessions() {
+        return firstDateInSessions;
     }
 
     private void parseInstalls(String filename) throws IOException {
@@ -113,8 +118,11 @@ public class DataRetriever {
 
                 // get the date (for latest date)
                 Date currentDate = new Date(milliSeconds);
-                if(currentDate.compareTo(latestDateInSessions) > 0){ // if later, update latest
-                    latestDateInSessions = currentDate;
+                if(currentDate.compareTo(lastDateInSessions) > 0){ // if later, update latest
+                    lastDateInSessions = currentDate;
+                }
+                if(currentDate.compareTo(firstDateInSessions) < 0){ // if earlier, update earliest
+                    firstDateInSessions = currentDate;
                 }
 
                 // evaluate day diff
